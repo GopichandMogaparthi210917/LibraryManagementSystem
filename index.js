@@ -1,18 +1,20 @@
-const express = require("express");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const userRoutes = require('./routes/userRoutes');
+const bookRoutes = require('./routes/bookRoutes');
+
 const app = express();
-const path = require('path');
+const port = process.env.PORT || 3000;
 
-app.use(express.json());
+mongoose.connect('mongodb://localhost:27017/librarydb', { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin","*");
-    res.header("Access-Control-Allow-Headers","Origin, X-Requested-Width, Content-Type, Accept,Authorization");
-    res.header("Access-Control-Allow-Methods","GET,POST,PUT,DELETE,OPTIONS")
-    next();
+app.use(bodyParser.json());
+
+app.use('/api', userRoutes);
+app.use('/api', bookRoutes);
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
-
-app.use(express.static(__dirname+"/public"));
-app.get('/',(req,res) => res.sendFile(path.join(__dirname,'/public','index.html')));
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('Server started on port ${PORT}!'));
