@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
+const publisherRoutes = require('./routes/publisher');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 
 app.use('/api', userRoutes);
 app.use('/api', bookRoutes);
+app.use('/api', publisherRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
